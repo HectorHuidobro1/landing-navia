@@ -1,0 +1,1229 @@
+<!DOCTYPE html>
+<html lang="es-CL">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Navia - Navega tu salud sin perderte</title>
+  <meta name="description" content="Navia orienta a chilenos que reciben un diagnóstico: FONASA, ISAPRE, GES, especialistas. Sin reemplazar a tu médico, con claridad cuando más la necesitas.">
+  <meta property="og:title" content="Navia - Navega tu salud sin perderte">
+  <meta property="og:description" content="Tu asistente de salud con IA para Chile. Cuando no sabes qué hacer con tu diagnóstico, Navia te guía.">
+  <meta property="og:type" content="website">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700;12..96,800&family=DM+Serif+Display&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    /* ====== RESET ====== */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+
+    /* ====== TOKENS ====== */
+    :root {
+      --navy:        #0D2B45;
+      --navy-mid:    #163d5c;
+      --teal:        #0097A7;
+      --teal-hover:  #00B0C2;
+      --teal-pale:   #E6F5F7;
+      --teal-pale2:  #CCE9ED;
+      --white:       #FFFFFF;
+      --surface:     #F4FAFC;
+      --text-1:      #0D2B45;
+      --text-2:      #3E5F74;
+      --text-3:      #7A96A8;
+      --border:      #DAE8ED;
+      --r-card:      16px;
+      --r-btn:       999px;
+      --shadow-sm:   0 2px 8px rgba(13,43,69,.07);
+      --shadow-md:   0 6px 28px rgba(13,43,69,.11);
+      --shadow-lg:   0 14px 60px rgba(13,43,69,.16);
+    }
+
+    body {
+      font-family: 'Outfit', sans-serif;
+      color: var(--text-1);
+      background: var(--white);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+    h1, h2, h3, .hero-h1, .sh-title, .cta-title, .close-quote, .app-content h2, .pricing-price {
+      font-family: 'Bricolage Grotesque', sans-serif;
+    }
+    img { max-width: 100%; height: auto; display: block; }
+    a { text-decoration: none; }
+
+    /* ====== UTILITIES ====== */
+    .container { width: 100%; max-width: 1160px; margin: 0 auto; padding: 0 20px; }
+
+    .btn-teal {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: var(--teal); color: #fff;
+      font-family: 'Outfit', sans-serif; font-size: 16px; font-weight: 700;
+      padding: 14px 28px; border-radius: var(--r-btn); border: none;
+      cursor: pointer; white-space: nowrap;
+      transition: background .2s, transform .15s;
+    }
+    .btn-teal:hover { background: var(--teal-hover); transform: translateY(-1px); }
+    .btn-teal:active { transform: scale(.98); }
+
+    .btn-outline {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: transparent; color: var(--navy);
+      font-family: 'Outfit', sans-serif; font-size: 16px; font-weight: 600;
+      padding: 14px 28px; border-radius: var(--r-btn);
+      border: 2px solid var(--border); cursor: pointer; white-space: nowrap;
+      transition: border-color .2s, color .2s, transform .15s;
+    }
+    .btn-outline:hover { border-color: var(--teal); color: var(--teal); }
+    .btn-outline:active { transform: scale(.98); }
+
+    .btn-white {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: #fff; color: var(--navy);
+      font-family: 'Outfit', sans-serif; font-size: 16px; font-weight: 700;
+      padding: 14px 28px; border-radius: var(--r-btn); border: none;
+      cursor: pointer; white-space: nowrap;
+      transition: background .2s, transform .15s;
+    }
+    .btn-white:hover { background: #eaf5f7; }
+    .btn-white:active { transform: scale(.98); }
+
+    .btn-ghost-white {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: transparent; color: rgba(255,255,255,.85);
+      font-family: 'Outfit', sans-serif; font-size: 16px; font-weight: 600;
+      padding: 14px 28px; border-radius: var(--r-btn);
+      border: 2px solid rgba(255,255,255,.28); cursor: pointer; white-space: nowrap;
+      transition: border-color .2s, color .2s, transform .15s;
+    }
+    .btn-ghost-white:hover { border-color: rgba(255,255,255,.6); color: #fff; }
+    .btn-ghost-white:active { transform: scale(.98); }
+
+    /* ====== REVEAL ANIMATIONS ====== */
+    .reveal        { opacity: 0; transform: translateY(22px);  transition: opacity .65s ease, transform .65s ease; }
+    .reveal.in     { opacity: 1; transform: none; }
+    .reveal-left   { opacity: 0; transform: translateX(-28px); transition: opacity .65s ease, transform .65s ease; }
+    .reveal-left.in  { opacity: 1; transform: none; }
+    .reveal-right  { opacity: 0; transform: translateX(28px);  transition: opacity .65s ease, transform .65s ease; }
+    .reveal-right.in { opacity: 1; transform: none; }
+    .reveal-scale  { opacity: 0; transform: scale(.93);        transition: opacity .6s ease, transform .6s ease; }
+    .reveal-scale.in { opacity: 1; transform: none; }
+    .d1 { transition-delay: .1s; }
+    .d2 { transition-delay: .2s; }
+    .d3 { transition-delay: .3s; }
+    .d4 { transition-delay: .4s; }
+
+    /* Section header */
+    .sh { max-width: 640px; margin: 0 auto 52px; text-align: center; }
+    .sh-label {
+      display: inline-block; font-size: 11px; font-weight: 700;
+      letter-spacing: .12em; text-transform: uppercase; color: var(--teal);
+      margin-bottom: 14px;
+    }
+    .sh-title {
+      font-size: clamp(26px, 4vw, 38px); font-weight: 800;
+      line-height: 1.15; letter-spacing: -.4px; color: var(--navy);
+      margin-bottom: 14px; text-wrap: balance;
+    }
+    .sh-sub {
+      font-size: 17px; color: var(--text-2); line-height: 1.65;
+    }
+    .sh-title--white { color: #fff; }
+    .sh-sub--white { color: rgba(255,255,255,.68); }
+
+    /* ====== NAV ====== */
+    .nav {
+      position: sticky; top: 0; z-index: 200;
+      height: 68px; display: flex; align-items: center;
+      background: rgba(255,255,255,.96);
+      backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      transition: box-shadow .3s;
+    }
+    .nav-inner {
+      display: flex; align-items: center;
+      justify-content: space-between; width: 100%;
+    }
+    .nav-logo { display: flex; align-items: center; }
+    .nav-logo-name {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.7rem; font-weight: 800;
+      letter-spacing: -0.5px; line-height: 1;
+      color: var(--navy);
+    }
+    .nav-logo-name span { color: var(--teal); }
+    .nav-links { display: none; list-style: none; gap: 28px; }
+    .nav-links a {
+      font-size: 15px; font-weight: 500; color: var(--text-2);
+      transition: color .2s; position: relative; padding-bottom: 2px;
+    }
+    .nav-links a::after {
+      content: ''; position: absolute; bottom: 0; left: 0;
+      width: 100%; height: 1.5px;
+      background: var(--teal);
+      transform: scaleX(0); transform-origin: left;
+      transition: transform .25s ease;
+    }
+    .nav-links a:hover { color: var(--navy); }
+    .nav-links a:hover::after { transform: scaleX(1); }
+    .nav-right { display: flex; align-items: center; gap: 10px; }
+    .nav-cta { font-size: 14px !important; padding: 10px 20px !important; }
+    @media (min-width: 768px) { .nav-links { display: flex; } }
+
+    /* ====== HERO ====== */
+    .hero {
+      min-height: calc(100dvh - 68px);
+      padding: 52px 0 64px;
+      background: var(--white);
+      display: flex; align-items: center;
+      position: relative; overflow: hidden;
+    }
+    .hero-blob {
+      position: absolute; pointer-events: none; border-radius: 50%;
+    }
+    .hero-blob-1 {
+      top: -100px; right: -120px; width: 560px; height: 560px;
+      background: radial-gradient(circle, rgba(0,151,167,.09) 0%, transparent 65%);
+      animation: blob-drift 9s ease-in-out infinite;
+    }
+    .hero-blob-2 {
+      bottom: -80px; left: -80px; width: 380px; height: 380px;
+      background: radial-gradient(circle, rgba(13,43,69,.05) 0%, transparent 65%);
+      animation: blob-drift 12s ease-in-out infinite reverse;
+    }
+    @keyframes blob-drift {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      33%       { transform: translate(16px, -20px) scale(1.04); }
+      66%       { transform: translate(-10px, 12px) scale(.97); }
+    }
+    .hero-grid {
+      display: grid; grid-template-columns: 1fr;
+      gap: 44px; align-items: center; position: relative;
+    }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: var(--teal-pale); color: var(--teal);
+      font-size: 12px; font-weight: 700;
+      padding: 6px 13px; border-radius: 999px; margin-bottom: 18px;
+      border: 1px solid rgba(0,151,167,.22);
+    }
+    .hero-badge-dot {
+      width: 7px; height: 7px; background: var(--teal); border-radius: 50%;
+      animation: pulse-dot 2s infinite;
+    }
+    @keyframes pulse-dot {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50%       { opacity: .5; transform: scale(.75); }
+    }
+    .hero-h1 {
+      font-size: clamp(34px, 6vw, 56px);
+      font-weight: 900; line-height: 1.08;
+      letter-spacing: -1.5px; color: var(--navy);
+      margin-bottom: 18px; text-wrap: balance;
+    }
+    .hero-h1 em { color: var(--teal); font-style: normal; }
+    .hero-sub {
+      font-size: 17px; color: var(--text-2);
+      line-height: 1.65; max-width: 480px; margin-bottom: 32px;
+    }
+    .hero-ctas { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 28px; }
+    .hero-note {
+      display: flex; align-items: center; gap: 7px;
+      font-size: 13px; color: var(--text-3);
+    }
+    .hero-note-icon { color: var(--teal); flex-shrink: 0; }
+    .hero-img-wrap {
+      position: relative;
+      border-radius: var(--r-card); overflow: hidden;
+      box-shadow: var(--shadow-lg);
+    }
+    .hero-img-wrap img {
+      width: 100%; height: 420px;
+      object-fit: cover; object-position: center top;
+    }
+    .hero-img-caption {
+      position: absolute; bottom: 16px; left: 16px; right: 16px;
+      background: rgba(13,43,69,.86);
+      backdrop-filter: blur(10px);
+      border-radius: 10px; padding: 14px 16px; color: #fff;
+    }
+    .hero-img-caption strong { display: block; font-size: 14px; font-weight: 700; margin-bottom: 2px; }
+    .hero-img-caption span  { font-size: 12px; color: rgba(255,255,255,.7); }
+    @media (min-width: 768px) {
+      .hero-grid { grid-template-columns: 55% 45%; gap: 60px; }
+      .hero-img-wrap img { height: 520px; }
+    }
+
+    /* ====== TRUST BAR ====== */
+    .trust-bar { background: var(--navy); padding: 26px 0; }
+    .trust-bar-inner {
+      display: flex; flex-wrap: wrap;
+      gap: 16px 36px; justify-content: center; align-items: center;
+    }
+    .trust-item {
+      display: flex; align-items: center; gap: 9px;
+      color: rgba(255,255,255,.8); font-size: 13px; font-weight: 500;
+    }
+    .trust-icon {
+      width: 30px; height: 30px; flex-shrink: 0;
+      background: rgba(0,151,167,.18);
+      border-radius: 7px; display: flex; align-items: center; justify-content: center;
+    }
+
+    /* ====== MARQUEE / TICKER ====== */
+    .ticker-sec { background: var(--teal-pale2); padding: 13px 0; overflow: hidden; }
+    .ticker-track {
+      display: flex; gap: 0; width: max-content;
+      animation: ticker-run 28s linear infinite;
+    }
+    .ticker-track:hover { animation-play-state: paused; }
+    .ticker-item {
+      display: inline-flex; align-items: center; gap: 22px;
+      font-size: 13px; font-weight: 600; color: var(--teal);
+      padding: 0 24px; white-space: nowrap; flex-shrink: 0;
+    }
+    .ticker-sep {
+      display: inline-block; width: 4px; height: 4px;
+      background: var(--teal); border-radius: 50%; opacity: .4; flex-shrink: 0;
+    }
+    @keyframes ticker-run {
+      0%   { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+
+    /* ====== PROBLEM ====== */
+    .problem { padding: 80px 0; background: var(--surface); }
+    .problem-grid {
+      display: grid; grid-template-columns: 1fr; gap: 14px;
+    }
+    .problem-card {
+      display: flex; gap: 16px; align-items: flex-start;
+      background: var(--white); border: 1px solid var(--border);
+      border-radius: var(--r-card); padding: 22px 24px;
+      box-shadow: var(--shadow-sm);
+      transition: transform .25s, box-shadow .25s;
+    }
+    .problem-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); }
+    .problem-icon {
+      width: 42px; height: 42px; flex-shrink: 0;
+      background: var(--teal-pale); border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      color: var(--teal);
+    }
+    .problem-card h3 { font-size: 15px; font-weight: 700; color: var(--navy); margin-bottom: 4px; }
+    .problem-card p  { font-size: 14px; color: var(--text-2); line-height: 1.55; }
+    @media (min-width: 640px)  { .problem-grid { grid-template-columns: 1fr 1fr; } }
+    @media (min-width: 1024px) { .problem-grid { grid-template-columns: repeat(4, 1fr); } }
+
+    /* ====== BENEFITS ====== */
+    .benefits { padding: 80px 0; background: var(--white); }
+    .benefits-grid {
+      display: grid; grid-template-columns: 1fr; gap: 22px;
+    }
+    .benefit-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--r-card); padding: 30px;
+      transition: transform .25s, box-shadow .25s;
+    }
+    .benefit-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); }
+    .benefit-card.featured {
+      background: var(--navy); border-color: var(--navy);
+    }
+    .benefit-icon {
+      width: 52px; height: 52px; background: var(--teal);
+      border-radius: 13px; display: flex; align-items: center; justify-content: center;
+      margin-bottom: 18px; color: #fff;
+    }
+    .benefit-card h3 { font-size: 20px; font-weight: 700; color: var(--navy); margin-bottom: 9px; }
+    .benefit-card p  { font-size: 15px; color: var(--text-2); line-height: 1.65; margin-bottom: 14px; }
+    .benefit-card.featured h3 { color: #fff; }
+    .benefit-card.featured p  { color: rgba(255,255,255,.65); }
+    .benefit-tag {
+      display: inline-block; font-size: 11px; font-weight: 700;
+      color: var(--teal); background: var(--teal-pale);
+      padding: 3px 10px; border-radius: 999px; letter-spacing: .04em;
+    }
+    .benefit-card.featured .benefit-tag {
+      background: rgba(0,151,167,.2); color: #5de3f0;
+    }
+    @media (min-width: 768px) {
+      .benefits-grid { grid-template-columns: 1fr 1fr; gap: 22px; }
+      .benefit-card.featured { grid-column: 1 / -1; }
+      .benefits-grid .benefit-card.featured .benefit-inner {
+        display: grid; grid-template-columns: 1fr 1fr; gap: 24px; align-items: start;
+      }
+    }
+    @media (min-width: 1024px) {
+      .benefits-grid { grid-template-columns: 2fr 1fr 1fr; }
+      .benefit-card.featured { grid-column: auto; }
+      .benefits-grid .benefit-card.featured .benefit-inner {
+        display: block;
+      }
+    }
+
+    /* ====== HOW ====== */
+    .how { padding: 80px 0; background: var(--navy); }
+    .steps { display: grid; grid-template-columns: 1fr; gap: 0; }
+    .step {
+      display: flex; gap: 20px; align-items: flex-start;
+      padding: 28px 0;
+    }
+    .step:not(:last-child) { border-bottom: 1px solid rgba(255,255,255,.1); }
+    .step-num {
+      width: 46px; height: 46px; flex-shrink: 0;
+      border-radius: 50%; background: var(--teal);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px; font-weight: 800; color: #fff;
+      position: relative; z-index: 1;
+    }
+    .step h3 { font-size: 18px; font-weight: 700; color: #fff; margin-bottom: 6px; }
+    .step p  { font-size: 15px; color: rgba(255,255,255,.65); line-height: 1.65; max-width: 520px; }
+    @media (min-width: 768px) {
+      .steps {
+        grid-template-columns: 1fr 1fr 1fr;
+        padding: 40px 0;
+        position: relative;
+      }
+      .steps::before {
+        content: ''; position: absolute;
+        top: 63px; left: calc(46px / 2 + 36px); right: calc(46px / 2 + 36px);
+        height: 1px;
+        background: linear-gradient(90deg, transparent 0%, rgba(0,151,167,.35) 20%, rgba(0,151,167,.35) 80%, transparent 100%);
+        z-index: 0;
+      }
+      .step {
+        flex-direction: column; padding: 0;
+        border-bottom: none !important;
+      }
+      .step:not(:last-child) { border-right: 1px solid rgba(255,255,255,.1) !important; padding-right: 36px; }
+      .step:not(:first-child) { padding-left: 36px; }
+    }
+
+    /* ====== APP SECTION ====== */
+    .app-sec { padding: 80px 0; background: var(--surface); }
+    .app-grid {
+      display: grid; grid-template-columns: 1fr;
+      gap: 48px; align-items: center;
+    }
+    .app-img-wrap {
+      border-radius: var(--r-card); overflow: hidden; box-shadow: var(--shadow-lg);
+    }
+    .app-img-wrap img {
+      width: 100%; height: 360px;
+      object-fit: cover; object-position: center;
+    }
+    .app-content .sh-label { text-align: left; display: block; }
+    .app-content h2 {
+      font-size: clamp(24px, 3.5vw, 36px); font-weight: 800;
+      line-height: 1.15; letter-spacing: -.4px;
+      color: var(--navy); margin-bottom: 14px; text-wrap: balance;
+    }
+    .app-content p { font-size: 16px; color: var(--text-2); line-height: 1.65; margin-bottom: 26px; }
+    .feature-list { list-style: none; display: flex; flex-direction: column; gap: 11px; }
+    .feature-item { display: flex; gap: 11px; align-items: flex-start; font-size: 15px; color: var(--text-1); }
+    .check-circle {
+      width: 22px; height: 22px; flex-shrink: 0;
+      background: var(--teal); border-radius: 50%;
+      display: flex; align-items: center; justify-content: center; margin-top: 1px;
+    }
+    @media (min-width: 768px) {
+      .app-grid { grid-template-columns: 1fr 1fr; gap: 64px; }
+      .app-img-wrap img { height: 480px; }
+    }
+
+    /* ====== TESTIMONIALS ====== */
+    .testimonials { padding: 80px 0; background: var(--white); }
+    .testi-grid {
+      display: grid; grid-template-columns: 1fr; gap: 20px;
+    }
+    .testi-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--r-card); padding: 26px;
+      transition: transform .25s, box-shadow .25s;
+    }
+    .testi-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); }
+    .stars { display: flex; gap: 3px; margin-bottom: 14px; }
+    .star { color: #F5A623; font-size: 16px; line-height: 1; }
+    .testi-text {
+      font-size: 15px; color: var(--text-1);
+      line-height: 1.72; margin-bottom: 20px; font-style: italic;
+    }
+    .testi-author { display: flex; align-items: center; gap: 12px; }
+    .testi-avatar {
+      width: 44px; height: 44px; border-radius: 50%;
+      background: var(--navy); color: #fff;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 14px; font-weight: 700; flex-shrink: 0;
+    }
+    .testi-name { font-size: 14px; font-weight: 700; color: var(--navy); }
+    .testi-loc  { font-size: 12px; color: var(--text-3); }
+    @media (min-width: 768px) { .testi-grid { grid-template-columns: 1fr 1fr 1fr; } }
+
+    /* ====== PRICING ====== */
+    .pricing { padding: 88px 0; background: var(--surface); }
+    .pricing-grid {
+      display: grid; grid-template-columns: 1fr; gap: 20px;
+      max-width: 780px; margin: 0 auto;
+    }
+    @media (min-width: 580px) { .pricing-grid { grid-template-columns: 1fr 1fr; } }
+    .pricing-card {
+      border: 1.5px solid var(--border); border-radius: 22px;
+      padding: 36px 32px; position: relative;
+      background: var(--white);
+      transition: transform .25s, box-shadow .25s;
+    }
+    .pricing-card:hover { transform: translateY(-5px); box-shadow: var(--shadow-lg); }
+    .pricing-card.featured { background: var(--navy); border-color: var(--navy); }
+    .pricing-badge {
+      position: absolute; top: -13px; left: 50%; transform: translateX(-50%);
+      background: var(--teal); color: #fff; white-space: nowrap;
+      font-size: 10px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase;
+      padding: 5px 14px; border-radius: 999px;
+    }
+    .pricing-name {
+      font-family: 'Outfit', sans-serif;
+      font-size: 11px; font-weight: 700; text-transform: uppercase;
+      letter-spacing: .1em; color: var(--text-3); margin-bottom: 14px;
+    }
+    .pricing-card.featured .pricing-name { color: rgba(255,255,255,.42); }
+    .pricing-price {
+      font-size: 52px; font-weight: 800; line-height: 1;
+      color: var(--navy); margin-bottom: 5px;
+    }
+    .pricing-card.featured .pricing-price { color: #fff; }
+    .pricing-period {
+      font-size: 13px; color: var(--text-3); margin-bottom: 28px; line-height: 1.4;
+    }
+    .pricing-card.featured .pricing-period { color: rgba(255,255,255,.38); }
+    .pricing-divider {
+      height: 1px; background: var(--border); margin-bottom: 22px;
+    }
+    .pricing-card.featured .pricing-divider { background: rgba(255,255,255,.1); }
+    .pricing-features { list-style: none; display: flex; flex-direction: column; gap: 12px; margin-bottom: 30px; }
+    .pricing-feature {
+      display: flex; align-items: flex-start; gap: 10px;
+      font-size: 14px; color: var(--text-1); line-height: 1.4;
+    }
+    .pricing-card.featured .pricing-feature { color: rgba(255,255,255,.8); }
+    .p-check {
+      width: 19px; height: 19px; flex-shrink: 0;
+      border-radius: 50%; margin-top: 1px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .p-check-light { background: var(--teal-pale);          color: var(--teal); }
+    .p-check-dark  { background: rgba(0,151,167,.22);       color: #5de3f0; }
+    .pricing-footnote {
+      text-align: center; font-size: 12px; color: var(--text-3);
+      margin-top: 20px; line-height: 1.6;
+    }
+
+    /* ====== CTA SECTION ====== */
+    .cta-sec {
+      padding: 80px 0;
+      background: linear-gradient(145deg, var(--navy) 0%, var(--navy-mid) 100%);
+      text-align: center; position: relative; overflow: hidden;
+    }
+    .cta-sec::before {
+      content: ''; position: absolute; top: -40%; left: 50%; transform: translateX(-50%);
+      width: 70%; height: 200%;
+      background: radial-gradient(ellipse, rgba(0,151,167,.13) 0%, transparent 65%);
+      pointer-events: none;
+    }
+    .cta-sec > .container { position: relative; z-index: 1; }
+    .cta-title {
+      font-size: clamp(26px, 4vw, 42px); font-weight: 800;
+      color: #fff; line-height: 1.12; letter-spacing: -.5px; margin-bottom: 14px;
+    }
+    .cta-sub {
+      font-size: 17px; color: rgba(255,255,255,.72);
+      max-width: 480px; margin: 0 auto 32px; line-height: 1.65;
+    }
+    .cta-form {
+      display: flex; flex-wrap: wrap; gap: 10px;
+      justify-content: center; max-width: 440px; margin: 0 auto 16px;
+    }
+    .cta-input {
+      flex: 1; min-width: 200px;
+      height: 52px; padding: 0 18px;
+      font-family: 'Outfit', sans-serif; font-size: 15px;
+      background: rgba(255,255,255,.1); border: 1.5px solid rgba(255,255,255,.22);
+      border-radius: 999px; color: #fff;
+      outline: none; transition: border-color .2s;
+    }
+    .cta-input::placeholder { color: rgba(255,255,255,.45); }
+    .cta-input:focus { border-color: rgba(255,255,255,.55); }
+    .cta-form .btn-white { height: 52px; padding: 0 26px !important; font-size: 15px !important; }
+    .cta-note { font-size: 12px; color: rgba(255,255,255,.38); }
+
+    /* ====== CLOSE SECTION ====== */
+    .close-sec {
+      padding: 64px 0; background: var(--teal-pale); text-align: center;
+    }
+    .close-quote {
+      font-size: clamp(20px, 3vw, 28px); font-weight: 700;
+      color: var(--navy); line-height: 1.4;
+      max-width: 640px; margin: 0 auto 16px; letter-spacing: -.3px;
+    }
+    .close-sub {
+      font-size: 16px; color: var(--text-2);
+      max-width: 500px; margin: 0 auto 28px; line-height: 1.65;
+    }
+
+    /* ====== FOOTER ====== */
+    .footer { background: var(--navy); padding: 56px 0 32px; }
+    .footer-grid {
+      display: grid; grid-template-columns: 1fr; gap: 36px; margin-bottom: 40px;
+    }
+    .footer-brand-row {
+      display: flex; align-items: center; gap: 9px;
+      color: #fff; font-size: 19px; font-weight: 800;
+      margin-bottom: 10px;
+    }
+    .footer-brand-mark {
+      width: 30px; height: 30px; background: var(--teal);
+      border-radius: 7px; display: flex; align-items: center; justify-content: center;
+    }
+    .footer-tagline { font-size: 13px; color: rgba(255,255,255,.45); font-style: italic; margin-bottom: 12px; }
+    .footer-desc  { font-size: 13px; color: rgba(255,255,255,.42); line-height: 1.7; }
+    .footer-col-title {
+      font-size: 11px; font-weight: 700; text-transform: uppercase;
+      letter-spacing: .1em; color: rgba(255,255,255,.55); margin-bottom: 14px;
+    }
+    .footer-links { list-style: none; display: flex; flex-direction: column; gap: 9px; }
+    .footer-links a { font-size: 14px; color: rgba(255,255,255,.55); transition: color .2s; }
+    .footer-links a:hover { color: #fff; }
+    @media (min-width: 768px) { .footer-grid { grid-template-columns: 2fr 1fr 1fr; } }
+
+    /* Privacy block */
+    .footer-privacy {
+      border-top: 1px solid rgba(255,255,255,.1);
+      padding: 28px 0 0;
+    }
+    .fp-title {
+      font-size: 10px; font-weight: 700; text-transform: uppercase;
+      letter-spacing: .12em; color: rgba(255,255,255,.45); margin-bottom: 10px;
+    }
+    .fp-text {
+      font-size: 12px; color: rgba(255,255,255,.33);
+      line-height: 1.75; max-width: 900px;
+    }
+    .footer-bottom {
+      margin-top: 28px; padding-top: 20px;
+      border-top: 1px solid rgba(255,255,255,.07);
+      display: flex; flex-wrap: wrap; gap: 10px;
+      justify-content: space-between; align-items: center;
+    }
+    .footer-bottom p { font-size: 12px; color: rgba(255,255,255,.3); }
+    .footer-legal { display: flex; gap: 18px; }
+    .footer-legal a { font-size: 12px; color: rgba(255,255,255,.35); transition: color .2s; }
+    .footer-legal a:hover { color: rgba(255,255,255,.65); }
+
+    /* ====== REDUCED MOTION ====== */
+    @media (prefers-reduced-motion: reduce) {
+      .reveal, .reveal-left, .reveal-right, .reveal-scale {
+        opacity: 1; transform: none; transition: none;
+      }
+      * { animation: none !important; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ===== NAV ===== -->
+<nav class="nav" role="navigation" aria-label="Navegación principal">
+  <div class="container">
+    <div class="nav-inner">
+      <a href="#" class="nav-logo" aria-label="Navia inicio">
+        <span class="nav-logo-name">Na<span>via</span></span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="#beneficios">Beneficios</a></li>
+        <li><a href="#como-funciona">Cómo funciona</a></li>
+        <li><a href="#precios">Precios</a></li>
+        <li><a href="#testimonios">Testimonios</a></li>
+        <li><a href="#privacidad">Privacidad</a></li>
+      </ul>
+      <div class="nav-right">
+        <a href="#cta" class="btn-teal nav-cta">Empieza gratis</a>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- ===== HERO ===== -->
+<section class="hero">
+  <div class="hero-blob hero-blob-1" aria-hidden="true"></div>
+  <div class="hero-blob hero-blob-2" aria-hidden="true"></div>
+  <div class="container">
+    <div class="hero-grid">
+
+      <div class="hero-content">
+        <h1 class="hero-h1 reveal">
+          Cuéntale tus síntomas.<br>
+          <em>Obtén orientación real.</em>
+        </h1>
+        <p class="hero-sub reveal d2">
+          Navia responde con información médica verificada de hospitales y especialistas chilenos, no con resultados de internet. Cuando algo es grave, te lo dice y te indica adónde ir.
+        </p>
+        <div class="hero-ctas reveal d3">
+          <a href="#cta" class="btn-teal" style="font-size:17px;padding:16px 32px;">
+            Empieza gratis
+            <svg width="15" height="15" viewBox="0 0 15 15" fill="none" aria-hidden="true"><path d="M2 7.5h11M8.5 3.5l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+          <a href="#como-funciona" class="btn-outline">Ver cómo funciona</a>
+        </div>
+        <div class="hero-note reveal">
+          <svg class="hero-note-icon" width="15" height="15" viewBox="0 0 15 15" fill="none" aria-hidden="true"><path d="M7.5 1l2 5H14l-4 3 1.5 5L7.5 11 3 14l1.5-5-4-3H5.5L7.5 1z" fill="currentColor"/></svg>
+          Gratis para empezar · Sin tarjeta · iOS y Android
+        </div>
+      </div>
+
+      <div class="reveal-right d1">
+        <div class="hero-img-wrap">
+          <img src="img2.jpeg"
+               alt="Mujer chilena sonriendo con su celular, Santiago y el Gran Torre de fondo, usando Navia"
+               loading="eager" width="600" height="520">
+          <div class="hero-img-caption">
+            <strong>Santiago, Chile</strong>
+            <span>Tu salud en tu idioma y tu sistema</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ===== TRUST BAR ===== -->
+<div class="trust-bar" role="complementary" aria-label="Garantías de Navia">
+  <div class="container">
+    <div class="trust-bar-inner">
+      <div class="trust-item">
+        <div class="trust-icon">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M2.5 1.5h7l2 2v9h-9v-11z" stroke="#0097A7" stroke-width="1.3" stroke-linejoin="round"/><path d="M5 6h4M5 8.5h3" stroke="#0097A7" stroke-width="1.3" stroke-linecap="round"/></svg>
+        </div>
+        Fuentes médicas verificadas
+      </div>
+      <div class="trust-item">
+        <div class="trust-icon">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M7 1.5L2 4v3.5c0 2.5 2 4.5 5 5 3-0.5 5-2.5 5-5V4L7 1.5z" stroke="#0097A7" stroke-width="1.3" stroke-linejoin="round"/><path d="M7 5v3M7 9.5v.5" stroke="#0097A7" stroke-width="1.3" stroke-linecap="round"/></svg>
+        </div>
+        Alerta si debes ir a urgencias
+      </div>
+      <div class="trust-item">
+        <div class="trust-icon">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><circle cx="7" cy="5" r="2.5" stroke="#0097A7" stroke-width="1.3"/><path d="M2 12c0-2.2 2.2-4 5-4s5 1.8 5 4" stroke="#0097A7" stroke-width="1.3" stroke-linecap="round"/></svg>
+        </div>
+        Hospitales y médicos reales de Chile
+      </div>
+      <div class="trust-item">
+        <div class="trust-icon">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><rect x="2.5" y="6" width="9" height="6.5" rx="1.5" stroke="#0097A7" stroke-width="1.3"/><path d="M4.5 6V4.5a2.5 2.5 0 015 0V6" stroke="#0097A7" stroke-width="1.3" stroke-linecap="round"/></svg>
+        </div>
+        Datos protegidos Ley 19.628
+      </div>
+      <div class="trust-item">
+        <div class="trust-icon">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><circle cx="7" cy="7" r="5.5" stroke="#0097A7" stroke-width="1.3"/><path d="M7 4.5v3l2 1.2" stroke="#0097A7" stroke-width="1.3" stroke-linecap="round"/></svg>
+        </div>
+        Disponible 24/7
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== TICKER ===== -->
+<div class="ticker-sec" aria-hidden="true">
+  <div class="ticker-track" id="tickerTrack">
+    <!-- items duplicated for seamless loop -->
+    <span class="ticker-item">Respaldada por bibliografía médica verificada <span class="ticker-sep"></span></span>
+    <span class="ticker-item">No resultados de internet <span class="ticker-sep"></span></span>
+    <span class="ticker-item">Te dice cuándo ir a urgencias <span class="ticker-sep"></span></span>
+    <span class="ticker-item">Información real de hospitales chilenos <span class="ticker-sep"></span></span>
+    <span class="ticker-item">Cuéntale tus síntomas con confianza <span class="ticker-sep"></span></span>
+    <span class="ticker-item">Precios reales de consultas y exámenes <span class="ticker-sep"></span></span>
+    <span class="ticker-item">Sugiere el especialista que necesitas <span class="ticker-sep"></span></span>
+    <span class="ticker-item">Respaldada por bibliografía médica verificada <span class="ticker-sep"></span></span>
+    <span class="ticker-item">No resultados de internet <span class="ticker-sep"></span></span>
+    <span class="ticker-item">Te dice cuándo ir a urgencias <span class="ticker-sep"></span></span>
+    <span class="ticker-item">Información real de hospitales chilenos <span class="ticker-sep"></span></span>
+    <span class="ticker-item">Cuéntale tus síntomas con confianza <span class="ticker-sep"></span></span>
+    <span class="ticker-item">Precios reales de consultas y exámenes <span class="ticker-sep"></span></span>
+    <span class="ticker-item">Sugiere el especialista que necesitas <span class="ticker-sep"></span></span>
+  </div>
+</div>
+
+<!-- ===== PROBLEM ===== -->
+<section class="problem">
+  <div class="container">
+    <div class="sh reveal">
+      <span class="sh-label">El problema</span>
+      <h2 class="sh-title">El sistema de salud chileno es un laberinto</h2>
+      <p class="sh-sub">Cuando recibes un diagnóstico, el sistema te pide navegar siglas, esperas y trámites que nadie te explica.</p>
+    </div>
+    <div class="problem-grid">
+      <div class="problem-card reveal-left">
+        <div class="problem-icon">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><circle cx="10" cy="10" r="8" stroke="currentColor" stroke-width="1.8"/><path d="M10 6v5l3 2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        </div>
+        <div>
+          <h3>Listas de espera eternas</h3>
+          <p>No sabes cuánto esperar ni si puedes hacer algo para avanzar antes.</p>
+        </div>
+      </div>
+      <div class="problem-card reveal d1">
+        <div class="problem-icon">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M10 3v14M3 10h14" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><circle cx="10" cy="10" r="8" stroke="currentColor" stroke-width="1.8"/></svg>
+        </div>
+        <div>
+          <h3>Siglas que no entiendes</h3>
+          <p>GES, AUGE, modalidad libre elección... nadie te dijo qué significan.</p>
+        </div>
+      </div>
+      <div class="problem-card reveal d2">
+        <div class="problem-icon">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M4 10c0-3.3 2.7-6 6-6s6 2.7 6 6-2.7 6-6 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M10 13v1M10 7v4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        </div>
+        <div>
+          <h3>No sabes a quién llamar</h3>
+          <p>Consultorio, hospital o FONASA directo: quién puede ayudarte primero.</p>
+        </div>
+      </div>
+      <div class="problem-card reveal-right d1">
+        <div class="problem-icon">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><circle cx="10" cy="10" r="8" stroke="currentColor" stroke-width="1.8"/><path d="M10 6v5M10 13v.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        </div>
+        <div>
+          <h3>Buscas en Google, terminas aterrado</h3>
+          <p>Internet te muestra lo peor. Navia responde con fuentes médicas verificadas, no con artículos de miedo.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== BENEFITS ===== -->
+<section class="benefits" id="beneficios">
+  <div class="container">
+    <div class="sh reveal">
+      <span class="sh-label">Lo que ganas</span>
+      <h2 class="sh-title">Orientación real cuando más la necesitas</h2>
+      <p class="sh-sub">Navia no diagnostica. Te da claridad sobre qué hacer, paso a paso, dentro de tu sistema de salud real.</p>
+    </div>
+    <div class="benefits-grid">
+      <div class="benefit-card featured reveal-left">
+        <div class="benefit-inner">
+          <div>
+            <div class="benefit-icon" aria-hidden="true">
+              <svg width="26" height="26" viewBox="0 0 26 26" fill="none"><path d="M13 3L4 7.5v8L13 21l9-5.5v-8L13 3z" stroke="white" stroke-width="2" stroke-linejoin="round"/><path d="M8.5 13l3 3 6-6" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+          </div>
+          <div>
+            <h3>Información que puedes confiar, no internet</h3>
+            <p>Navia responde con bibliografía médica verificada e información real de hospitales, clínicas y especialistas de Chile. No artículos de internet, no opiniones: fuentes curadas por profesionales de salud.</p>
+            <span class="benefit-tag">Fuentes verificadas</span>
+          </div>
+        </div>
+      </div>
+      <div class="benefit-card reveal d1">
+        <div class="benefit-icon" aria-hidden="true">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="white" stroke-width="2"/><path d="M12 8v5l3 2" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>
+        </div>
+        <h3>Sabe cuándo es urgencia</h3>
+        <p>Si tus síntomas son graves, Navia te lo dice directo y te indica ir a urgencias o al SAMU. Sin minimizar, sin alarmarte innecesariamente.</p>
+        <span class="benefit-tag">Alerta de emergencia</span>
+      </div>
+      <div class="benefit-card reveal d2">
+        <div class="benefit-icon" aria-hidden="true">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M12 3c-5 0-9 4-9 9s4 9 9 9 9-4 9-9-4-9-9-9z" stroke="white" stroke-width="2"/><path d="M8.5 12l2.5 2.5 4.5-5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <h3>Te sugiere el especialista correcto</h3>
+        <p>Con información real de médicos y clínicas de Chile, Navia te dice qué tipo de especialista necesitas y dónde encontrarlo, con precios reales.</p>
+        <span class="benefit-tag">Directorio médico local</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== HOW IT WORKS ===== -->
+<section class="how" id="como-funciona">
+  <div class="container">
+    <div class="sh reveal">
+      <span class="sh-label" style="color:rgba(255,255,255,.5);">Cómo funciona</span>
+      <h2 class="sh-title sh-title--white">Tres pasos para dejar de estar perdido</h2>
+      <p class="sh-sub sh-sub--white">Funciona desde tu celular. Sin instalar nada complicado ni crear una cuenta médica.</p>
+    </div>
+    <div class="steps">
+      <div class="step reveal-left">
+        <div class="step-num">1</div>
+        <div>
+          <h3>Cuéntanos tu situación</h3>
+          <p>Escribe tu diagnóstico o lo que te preocupa, con tus propias palabras. No necesitas saber la terminología médica exacta.</p>
+        </div>
+      </div>
+      <div class="step reveal d1">
+        <div class="step-num">2</div>
+        <div>
+          <h3>Navia consulta fuentes verificadas</h3>
+          <p>No busca en internet. Consulta nuestra base de datos de bibliografía médica, hospitales, precios y especialistas de Chile para darte información confiable.</p>
+        </div>
+      </div>
+      <div class="step reveal-right d1">
+        <div class="step-num">3</div>
+        <div>
+          <h3>Recibes orientación clara</h3>
+          <p>Pasos concretos adaptados a tu cobertura, explicados en simple. Sin diagnósticos, sin reemplazar a tu médico.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== APP SECTION ===== -->
+<section class="app-sec">
+  <div class="container">
+    <div class="app-grid">
+      <div class="app-img-wrap reveal-left">
+        <img src="img1.jpeg"
+             alt="Enfermera latina con estetoscopio mostrando la aplicación Navia en su celular con branding visible"
+             loading="lazy" width="600" height="480">
+      </div>
+      <div class="app-content reveal-right d1">
+        <span class="sh-label">Navia en acción</span>
+        <h2>Diseñada para complementar al médico, no reemplazarlo</h2>
+        <p>Los profesionales de salud recomiendan Navia porque sus pacientes llegan mejor informados y con preguntas más precisas. Eso hace las consultas más productivas para todos.</p>
+        <ul class="feature-list">
+          <li class="feature-item">
+            <span class="check-circle" aria-hidden="true">
+              <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M2 5.5l2.2 2.5L9 3" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </span>
+            Explica el sistema en lenguaje simple
+          </li>
+          <li class="feature-item">
+            <span class="check-circle" aria-hidden="true">
+              <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M2 5.5l2.2 2.5L9 3" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </span>
+            Orienta sin diagnosticar ni prescribir
+          </li>
+          <li class="feature-item">
+            <span class="check-circle" aria-hidden="true">
+              <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M2 5.5l2.2 2.5L9 3" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </span>
+            Te ayuda a entender FONASA, ISAPRE y prestadores privados
+          </li>
+          <li class="feature-item">
+            <span class="check-circle" aria-hidden="true">
+              <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M2 5.5l2.2 2.5L9 3" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </span>
+            Recuerda tu historial para orientación personalizada
+          </li>
+          <li class="feature-item">
+            <span class="check-circle" aria-hidden="true">
+              <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M2 5.5l2.2 2.5L9 3" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </span>
+            Datos cifrados y protegidos bajo Ley 19.628
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== TESTIMONIALS ===== -->
+<section class="testimonials" id="testimonios">
+  <div class="container">
+    <div class="sh reveal">
+      <span class="sh-label">Lo que dicen</span>
+      <h2 class="sh-title">Personas que encontraron su camino</h2>
+      <p class="sh-sub">Chilenos que enfrentaron un diagnóstico y usaron Navia para orientarse en el sistema de salud.</p>
+    </div>
+    <div class="testi-grid">
+      <div class="testi-card reveal-left">
+        <div class="stars" aria-label="5 de 5 estrellas">
+          <span class="star">&#9733;</span><span class="star">&#9733;</span><span class="star">&#9733;</span><span class="star">&#9733;</span><span class="star">&#9733;</span>
+        </div>
+        <p class="testi-text">"Me diagnosticaron hipertensión y no sabía si ir a FONASA o si mi ISAPRE cubría el especialista. Navia me explicó todo en 5 minutos. Llegué a la consulta sabiendo exactamente qué preguntar."</p>
+        <div class="testi-author">
+          <div class="testi-avatar" style="background:#0097A7;">VM</div>
+          <div>
+            <div class="testi-name">Valentina Morales</div>
+            <div class="testi-loc">38 años, Las Condes, Santiago</div>
+          </div>
+        </div>
+      </div>
+      <div class="testi-card reveal d1">
+        <div class="stars" aria-label="5 de 5 estrellas">
+          <span class="star">&#9733;</span><span class="star">&#9733;</span><span class="star">&#9733;</span><span class="star">&#9733;</span><span class="star">&#9733;</span>
+        </div>
+        <p class="testi-text">"Con el diagnóstico de mi papá de diabetes tipo 2, no entendíamos nada del GES. Navia nos explicó que teníamos cobertura garantizada y cuáles eran los plazos. Eso nos tranquilizó muchísimo."</p>
+        <div class="testi-author">
+          <div class="testi-avatar" style="background:#163d5c;">RA</div>
+          <div>
+            <div class="testi-name">Roberto Álvarez</div>
+            <div class="testi-loc">52 años, Viña del Mar</div>
+          </div>
+        </div>
+      </div>
+      <div class="testi-card reveal-right d1">
+        <div class="stars" aria-label="5 de 5 estrellas">
+          <span class="star">&#9733;</span><span class="star">&#9733;</span><span class="star">&#9733;</span><span class="star">&#9733;</span><span class="star">&#9733;</span>
+        </div>
+        <p class="testi-text">"Le pregunté a Navia a las 11 de la noche si necesitaba derivación o podía ir directo al especialista. Me respondió al instante, sin hacerme sentir tonta por no saberlo."</p>
+        <div class="testi-author">
+          <div class="testi-avatar" style="background:#0D2B45;">CS</div>
+          <div>
+            <div class="testi-name">Claudia Sepúlveda</div>
+            <div class="testi-loc">45 años, Concepción</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== PRICING ===== -->
+<section class="pricing" id="precios">
+  <div class="container">
+    <div class="sh reveal">
+      <span class="sh-label">Planes</span>
+      <h2 class="sh-title">Empieza gratis, crece cuando necesites más</h2>
+      <p class="sh-sub">Sin contratos ni letra chica. Cancela cuando quieras.</p>
+    </div>
+    <div class="pricing-grid">
+
+      <!-- Plan Básico -->
+      <div class="pricing-card reveal-left">
+        <p class="pricing-name">Plan Básico</p>
+        <div class="pricing-price">Gratis</div>
+        <p class="pricing-period">Para siempre · sin tarjeta</p>
+        <div class="pricing-divider"></div>
+        <ul class="pricing-features">
+          <li class="pricing-feature">
+            <span class="p-check p-check-light">
+              <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M1.5 5l2.5 2.5 4.5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </span>
+            10 consultas al mes
+          </li>
+          <li class="pricing-feature">
+            <span class="p-check p-check-light">
+              <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M1.5 5l2.5 2.5 4.5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </span>
+            Orientación básica FONASA e ISAPRE
+          </li>
+          <li class="pricing-feature">
+            <span class="p-check p-check-light">
+              <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M1.5 5l2.5 2.5 4.5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </span>
+            Guías del sistema de salud chileno
+          </li>
+          <li class="pricing-feature">
+            <span class="p-check p-check-light">
+              <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M1.5 5l2.5 2.5 4.5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </span>
+            Disponible 24/7
+          </li>
+        </ul>
+        <a href="#cta" class="btn-outline" style="width:100%;justify-content:center;">
+          Comenzar gratis
+        </a>
+      </div>
+
+      <!-- Plan Pro -->
+      <div class="pricing-card featured reveal-right">
+        <div class="pricing-badge">Más popular</div>
+        <p class="pricing-name">Plan Pro</p>
+        <div class="pricing-price">$3.990</div>
+        <p class="pricing-period">al mes · cancela cuando quieras</p>
+        <div class="pricing-divider"></div>
+        <ul class="pricing-features">
+          <li class="pricing-feature">
+            <span class="p-check p-check-dark">
+              <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M1.5 5l2.5 2.5 4.5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </span>
+            Consultas ilimitadas
+          </li>
+          <li class="pricing-feature">
+            <span class="p-check p-check-dark">
+              <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M1.5 5l2.5 2.5 4.5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </span>
+            Historial personalizado de orientaciones
+          </li>
+          <li class="pricing-feature">
+            <span class="p-check p-check-dark">
+              <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M1.5 5l2.5 2.5 4.5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </span>
+            Alertas por cambios en tu cobertura
+          </li>
+          <li class="pricing-feature">
+            <span class="p-check p-check-dark">
+              <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M1.5 5l2.5 2.5 4.5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </span>
+            Resumen para llevar al médico
+          </li>
+          <li class="pricing-feature">
+            <span class="p-check p-check-dark">
+              <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M1.5 5l2.5 2.5 4.5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </span>
+            Soporte prioritario
+          </li>
+        </ul>
+        <a href="#cta" class="btn-teal" style="width:100%;justify-content:center;">
+          Comenzar Plan Pro
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M2 7h10M7.5 3l4 4-4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+      </div>
+
+    </div>
+    <p class="pricing-footnote reveal">Todos los planes incluyen protección de datos Ley 19.628. Navia es orientación, no diagnóstico médico.</p>
+  </div>
+</section>
+
+<!-- ===== CTA SECTION ===== -->
+<section class="cta-sec" id="cta">
+  <div class="container">
+    <h2 class="cta-title reveal">
+      Cuéntale tus síntomas.<br>Confía en la respuesta.
+    </h2>
+    <p class="cta-sub reveal d1">
+      Respaldada por fuentes médicas verificadas, no por internet. Gratis para empezar, sin tarjeta.
+    </p>
+    <form class="cta-form reveal d2" onsubmit="handleSubmit(event)">
+      <input class="cta-input" type="email" placeholder="tu@email.com" aria-label="Correo electrónico" required>
+      <button type="submit" class="btn-white">
+        Empieza gratis
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M2 7h10M7.5 3l4 4-4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+    </form>
+    <p class="cta-note reveal">Disponible en iOS y Android. Gratis para siempre en el Plan Básico. Tus datos protegidos bajo Ley 19.628.</p>
+  </div>
+</section>
+
+<!-- ===== CLOSE SECTION ===== -->
+<section class="close-sec">
+  <div class="container">
+    <p class="close-quote reveal">"No más búsquedas en internet que te asustan. Información médica verificada, cuando la necesitas."</p>
+    <p class="close-sub reveal d1">Navia no reemplaza al médico ni diagnostica enfermedades. Usa fuentes médicas reales para orientarte — y cuando algo es grave, te lo dice sin rodeos.</p>
+    <a href="#cta" class="btn-teal reveal d2" style="font-size:17px;padding:16px 32px;">
+      Comienza ahora, es gratis
+      <svg width="15" height="15" viewBox="0 0 15 15" fill="none" aria-hidden="true"><path d="M2 7.5h11M8.5 3.5l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </a>
+  </div>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer class="footer" id="privacidad" role="contentinfo">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-brand-row">
+          <span style="font-family:'DM Serif Display',serif;font-size:1.6rem;font-weight:800;letter-spacing:-0.5px;line-height:1;color:#fff;">Na<span style="color:var(--teal);">via</span></span>
+        </div>
+        <p class="footer-tagline">"Navega tu salud sin perderte"</p>
+        <p class="footer-desc">Asistente de salud con IA para el sistema chileno. Para cualquier chileno que necesite orientarse en su salud.</p>
+      </div>
+      <div>
+        <p class="footer-col-title">Producto</p>
+        <ul class="footer-links">
+          <li><a href="#beneficios">Beneficios</a></li>
+          <li><a href="#como-funciona">Cómo funciona</a></li>
+          <li><a href="#precios">Precios</a></li>
+          <li><a href="#cta">Preguntas frecuentes</a></li>
+        </ul>
+      </div>
+      <div>
+        <p class="footer-col-title">Legal</p>
+        <ul class="footer-links">
+          <li><a href="#privacidad">Política de Privacidad</a></li>
+          <li><a href="#privacidad">Términos de Uso</a></li>
+          <li><a href="#privacidad">Aviso de Cookies</a></li>
+          <li><a href="mailto:privacidad@navia.cl">privacidad@navia.cl</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-privacy">
+      <p class="fp-title">Aviso de Privacidad y Tratamiento de Datos de Salud</p>
+      <p class="fp-text">
+        Navia cumple con la Ley N° 19.628 sobre Protección de la Vida Privada de Chile y las disposiciones aplicables de la Ley N° 20.584 sobre derechos de los pacientes. Los datos personales y de salud que el usuario comparte son tratados con estricta confidencialidad, utilizados exclusivamente para brindar orientación, y nunca cedidos ni vendidos a terceros sin consentimiento expreso. Navia no almacena diagnósticos clínicos completos ni historiales médicos en servidores externos. La información de navegación se anonimiza para mejora del servicio. <strong style="color:rgba(255,255,255,.5)">Navia NO es un dispositivo médico registrado, no emite diagnósticos, no reemplaza la evaluación ni el tratamiento de un profesional de la salud.</strong> Ante cualquier emergencia médica, llame al 131 (SAMU) o acuda a urgencias de inmediato. Para ejercer sus derechos ARCO (Acceso, Rectificación, Cancelación y Oposición) contacte: privacidad@navia.cl
+      </p>
+    </div>
+
+    <div class="footer-bottom">
+      <p>&copy; 2025 Navia. Todos los derechos reservados.</p>
+      <div class="footer-legal">
+        <a href="#privacidad">Privacidad</a>
+        <a href="#privacidad">Términos</a>
+        <a href="mailto:privacidad@navia.cl">Contacto</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script>
+  const noMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  if (!noMotion) {
+    gsap.registerPlugin(ScrollTrigger);
+
+    // ===== HERO PARALLAX =====
+    gsap.to('.hero-img-wrap', {
+      yPercent: 16,
+      ease: 'none',
+      scrollTrigger: {
+        trigger: '.hero',
+        start: 'top top',
+        end: 'bottom top',
+        scrub: 1.4,
+      }
+    });
+
+    // ===== CARDS STAGGER con GSAP =====
+    ['.problem-card', '.testi-card', '.pricing-card'].forEach(selector => {
+      const cards = gsap.utils.toArray(selector);
+      if (!cards.length) return;
+      gsap.from(cards, {
+        y: 28, opacity: 0, duration: 0.65,
+        ease: 'power3.out',
+        stagger: 0.1,
+        scrollTrigger: {
+          trigger: cards[0].closest('section, div'),
+          start: 'top 82%',
+        }
+      });
+      // quitar clases reveal para no doble-animar
+      cards.forEach(c => { c.classList.remove('reveal','reveal-left','reveal-right'); c.classList.add('in'); });
+    });
+  }
+
+  // ===== HERO REVEAL INMEDIATO =====
+  document.querySelectorAll('.hero .reveal, .hero .reveal-left, .hero .reveal-right, .hero .reveal-scale')
+    .forEach(el => el.classList.add('in'));
+
+  // ===== SCROLL REVEAL (resto de secciones) =====
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -36px 0px' });
+
+  document.querySelectorAll('.reveal:not(.in), .reveal-left:not(.in), .reveal-right:not(.in), .reveal-scale:not(.in)')
+    .forEach(el => io.observe(el));
+
+  // ===== NAV SOMBRA =====
+  const nav = document.querySelector('.nav');
+  window.addEventListener('scroll', () => {
+    nav.style.boxShadow = window.scrollY > 10 ? '0 2px 16px rgba(13,43,69,.1)' : 'none';
+  }, { passive: true });
+
+  // ===== FORM CTA =====
+  function handleSubmit(e) {
+    e.preventDefault();
+    const btn = e.target.querySelector('button');
+    const original = btn.innerHTML;
+    btn.innerHTML = 'Listo, te avisamos pronto <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2.5 7l3 3 6-6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+    btn.style.background = '#0D2B45'; btn.style.color = '#fff';
+    setTimeout(() => { btn.innerHTML = original; btn.style.background = ''; btn.style.color = ''; }, 4000);
+  }
+</script>
+</body>
+</html>
