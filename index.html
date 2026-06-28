@@ -219,7 +219,7 @@
       letter-spacing: -1.5px; color: var(--navy);
       margin-bottom: 18px; text-wrap: balance;
     }
-    .hero-h1 em { color: var(--teal); font-style: normal; }
+    .hero-h1 em { font-style: normal; }
     .hero-sub {
       font-size: 17px; color: var(--text-2);
       line-height: 1.65; max-width: 480px; margin-bottom: 32px;
@@ -627,6 +627,23 @@
       }
       * { animation: none !important; }
     }
+
+    /* ====== GRADIENT ACCENT TEXT ====== */
+    .text-gradient {
+      background: linear-gradient(120deg, var(--teal) 0%, #00cfdf 55%, var(--teal-hover) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      display: inline-block;
+    }
+
+    /* ====== HERO: transición más suave ====== */
+    .hero .reveal, .hero .reveal-left, .hero .reveal-right {
+      transition: opacity 0.75s cubic-bezier(.25,.1,.25,1), transform 0.75s cubic-bezier(.25,.1,.25,1);
+    }
+
+    /* ====== MAGNETIC / TILT ====== */
+    .btn-teal, .btn-white, .btn-outline, .btn-ghost-white { will-change: transform; }
   </style>
 </head>
 <body>
@@ -662,7 +679,7 @@
       <div class="hero-content">
         <h1 class="hero-h1 reveal">
           Cuéntale tus síntomas.<br>
-          <em>Obtén orientación real.</em>
+          <em class="text-gradient">Obtén orientación real.</em>
         </h1>
         <p class="hero-sub reveal d2">
           Navia responde con información médica verificada de hospitales y especialistas chilenos, no con resultados de internet. Cuando algo es grave, te lo dice y te indica adónde ir.
@@ -1183,9 +1200,9 @@
 
   }
 
-  // ===== HERO REVEAL INMEDIATO =====
+  // ===== HERO REVEAL CON STAGGER =====
   document.querySelectorAll('.hero .reveal, .hero .reveal-left, .hero .reveal-right, .hero .reveal-scale')
-    .forEach(el => el.classList.add('in'));
+    .forEach((el, i) => setTimeout(() => el.classList.add('in'), i * 130 + 60));
 
   // ===== SCROLL REVEAL (resto de secciones) =====
   const io = new IntersectionObserver((entries) => {
@@ -1202,6 +1219,46 @@
   window.addEventListener('scroll', () => {
     nav.style.boxShadow = window.scrollY > 10 ? '0 2px 16px rgba(13,43,69,.1)' : 'none';
   }, { passive: true });
+
+  // ===== MAGNETIC BUTTONS + 3D TILT (solo desktop) =====
+  const isTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+  if (!noMotion && !isTouch) {
+
+    // Botones magnéticos
+    const BASE_T = 'background .2s, border-color .2s, color .2s';
+    document.querySelectorAll('.btn-teal, .btn-white, .btn-outline, .btn-ghost-white').forEach(btn => {
+      btn.addEventListener('mousemove', e => {
+        const r  = btn.getBoundingClientRect();
+        const dx = (e.clientX - (r.left + r.width  / 2)) * 0.38;
+        const dy = (e.clientY - (r.top  + r.height / 2)) * 0.38;
+        btn.style.transition = `transform 0.3s cubic-bezier(.25,.46,.45,.94), ${BASE_T}`;
+        btn.style.transform  = `translate3d(${dx}px,${dy}px,0)`;
+      });
+      btn.addEventListener('mouseleave', () => {
+        btn.style.transition = `transform 0.65s cubic-bezier(.25,.46,.45,.94), ${BASE_T}`;
+        btn.style.transform  = 'translate3d(0,0,0)';
+      });
+    });
+
+    // Tilt 3D en tarjetas
+    const TILT = 6;
+    document.querySelectorAll('.problem-card, .testi-card, .pricing-card, .benefit-card:not(.featured)').forEach(card => {
+      card.addEventListener('mousemove', e => {
+        const r  = card.getBoundingClientRect();
+        const rx = -((e.clientY - r.top)  / r.height - 0.5) * TILT * 2;
+        const ry =  ((e.clientX - r.left) / r.width  - 0.5) * TILT * 2;
+        card.style.transition = 'transform 0.12s ease-out, box-shadow 0.2s';
+        card.style.transform  = `perspective(900px) rotateX(${rx}deg) rotateY(${ry}deg) translateY(-4px) scale(1.01)`;
+        card.style.boxShadow  = 'var(--shadow-lg)';
+      });
+      card.addEventListener('mouseleave', () => {
+        card.style.transition = 'transform 0.6s cubic-bezier(.25,.46,.45,.94), box-shadow 0.4s';
+        card.style.transform  = 'perspective(900px) rotateX(0) rotateY(0) translateY(0) scale(1)';
+        card.style.boxShadow  = '';
+      });
+    });
+
+  }
 
   // ===== FORM CTA =====
   function handleSubmit(e) {
